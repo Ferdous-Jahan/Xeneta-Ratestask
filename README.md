@@ -38,5 +38,5 @@ N.B : Fake initial migration is because I have used already existing table model
 * Now the program will be running on ```http://127.0.0.1:8000/```
 ## Additional notes
 
-I have spent around 12 hours on this task. Figuring out how to migrate the prices column as it had no primary key when created and I have to use fake initial migration as I am using the existing table took a good amount of time from these hours. It was overall a challenging and fun task. 
+I have spent around 12 hours on this task. Figuring out how to migrate the prices table with primary key 'id' as it had no primary key when created and I have to use fake initial migration as I am using the existing table took a good amount of time from these hours. It was overall a challenging and fun task. 
 
