@@ -35,6 +35,7 @@ This step is needed as the prices table has no primary key. Django rest framewor
 
 N.B : Fake initial migration is because I have used already existing table models.
 
+* Now the program will be running on ```http://127.0.0.1:8000/```
 ## Additional notes
 
 I have spent around 12 hours on this task. It was overall a challenging and fun task. 
