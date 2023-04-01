@@ -18,25 +18,30 @@ def average_price_list(request):
     origin = request.GET.get('origin')
     destination = request.GET.get('destination')
 
+    # Get regions from query params
     origin_regions = Regions.objects.raw("SELECT * FROM regions WHERE slug = %s OR parent_slug=%s", [origin,origin])
     destination_regions = Regions.objects.raw("SELECT * FROM regions WHERE slug = %s OR parent_slug=%s", [destination,destination])
 
     origin_regions_serializer = RegionsSerializer(origin_regions, many=True)
     destination_regions_serializer = RegionsSerializer(destination_regions, many=True)
 
+    # Get origin ports that falls under the regions from the query param
     if len(origin_regions_serializer.data) > 0:
         origin_ports_list = get_port_list(origin_regions_serializer)
     else:
+        # Or if direct port code was available get the port
         origin_ports_list = get_port(origin)
         
-
+    # Same for destination ports
     if len(destination_regions_serializer.data) > 0:
         destination_ports_list = get_port_list(destination_regions_serializer)
     else:
         destination_ports_list = get_port(destination)
 
+    # Get prices that matches the query params criteria
     prices = get_prices(origin_ports_list, destination_ports_list, date_from_string, date_to_string)
     
+    # Make a datestring list in YYYY-MM-DD format for (date_from - date_to)
     day_from = datetime.strptime(date_from_string, '%Y-%m-%d')
     day_to = datetime.strptime(date_to_string, '%Y-%m-%d')
     
@@ -47,6 +52,7 @@ def average_price_list(request):
     for price in prices:
         days_available.append(price['day'])
 
+    # seperate list for days that will have null average_price and valid average_price
     null_values = []
     available_price_values = []
     for date in date_list:
@@ -60,6 +66,7 @@ def average_price_list(request):
     averages = {}
     counts = {}
 
+    # Create list of dicts with valid average_price days
     for item in available_price_values:
         day = item['day']
         price = item['average_price']
@@ -75,7 +82,6 @@ def average_price_list(request):
 
     new_dict = {item['day']: item['average_price'] for item in null_values}
 
-    # Iterate over the previous result list and update the average_price value
     for item in days_with_average_price:
         day = item['day']
         if day in new_dict:
