@@ -114,13 +114,13 @@ def get_port(port):
 
 def get_prices(origin_ports_list, destination_ports_list, date_from, date_to):
     if len(origin_ports_list) > 1 and len(destination_ports_list) > 1:
-        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in {origin} AND dest_code in {destination} AND day > '{date_from}' AND day < '{date_to}' ORDER BY id ASC".format(origin=tuple(origin_ports_list),destination=tuple(destination_ports_list), date_from=date_from,date_to=date_to))
+        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in {origin} AND dest_code in {destination} AND day >= '{date_from}' AND day <= '{date_to}' ORDER BY id ASC".format(origin=tuple(origin_ports_list),destination=tuple(destination_ports_list), date_from=date_from,date_to=date_to))
     elif len(origin_ports_list) > 1 and len(destination_ports_list) <= 1:
-        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in {origin} AND dest_code in ('{destination}') AND day > '{date_from}' AND day < '{date_to}' ORDER BY id ASC".format(origin=tuple(origin_ports_list),destination=destination_ports_list[0], date_from=date_from,date_to=date_to))
+        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in {origin} AND dest_code in ('{destination}') AND day >= '{date_from}' AND day <= '{date_to}' ORDER BY id ASC".format(origin=tuple(origin_ports_list),destination=destination_ports_list[0], date_from=date_from,date_to=date_to))
     elif len(origin_ports_list) > 1 and len(destination_ports_list) <= 1:
-        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in ('{origin}') AND dest_code in {destination} AND day > '{date_from}' AND day < '{date_to}' ORDER BY id ASC".format(origin=origin_ports_list[0],destination=tuple(destination_ports_list), date_from=date_from,date_to=date_to))
+        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in ('{origin}') AND dest_code in {destination} AND day >= '{date_from}' AND day <= '{date_to}' ORDER BY id ASC".format(origin=origin_ports_list[0],destination=tuple(destination_ports_list), date_from=date_from,date_to=date_to))
     else:
-        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in ('{origin}') AND dest_code in ('{destination}') AND day > '{date_from}' AND day < '{date_to}' ORDER BY id ASC".format(origin=origin_ports_list[0],destination=destination_ports_list[0], date_from=date_from,date_to=date_to))
+        prices = Prices.objects.raw("SELECT * FROM prices WHERE orig_code in ('{origin}') AND dest_code in ('{destination}') AND day >= '{date_from}' AND day <= '{date_to}' ORDER BY id ASC".format(origin=origin_ports_list[0],destination=destination_ports_list[0], date_from=date_from,date_to=date_to))
 
     prices_serializer = PricesSerializer(prices, many=True)
     return prices_serializer.data

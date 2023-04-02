@@ -2,6 +2,11 @@
 
 I have chosen Django rest framework as I have in depth knowledge of this framework. I have used the docker postgres instance that was supplied with the task. I have only used raw sql queries rather than ORM as instructed in the task description.
 
+## My understanding from the requirements
+My approach was if origin or destination was region then get that region and its child regions recursively and then get ports of those regions. If origin or destination is port code then use that one directly.
+
+After getting origin and destination ports filter the rows from prices table within the date range having the origin and destination ports. Then make the response JSON according to requirements with average price per day within the date range from query params.
+
 ## Project setup
 
 ### Docker setup for postgres instance
