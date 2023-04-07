@@ -101,7 +101,7 @@ def average_price_list(request):
             sorted_list = sorted(combined_list, key=lambda x: x['day'])
             return Response( sorted_list,  status=status.HTTP_201_CREATED)
         else:
-            # response requests with missing param(s)
+            # response for requests with missing param(s)
             return Response( {'message': 'One or more parameters are missing'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         data = {'error': str(e)}
