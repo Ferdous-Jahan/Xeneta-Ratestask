@@ -45,9 +45,10 @@ def average_price_list(request):
             if len(destination_ports_list) > 0 and len(origin_ports_list) > 0:
                 prices = get_prices(origin_ports_list, destination_ports_list, date_from_string, date_to_string)
             else:
+                # otherwise raise exception if the origin or destination port or region name does not exist in database
                 raise Exception("destination or origin port does not exist")
 
-            # Make a datestring list in YYYY-MM-DD format for (date_from - date_to)
+            # Make a date list in YYYY-MM-DD format for (date_from - date_to)
             day_from = datetime.strptime(date_from_string, '%Y-%m-%d')
             day_to = datetime.strptime(date_to_string, '%Y-%m-%d')
             
@@ -58,7 +59,7 @@ def average_price_list(request):
             for price in prices:
                 days_available.append(price['day'])
 
-            # seperate list for days that will have null average_price and valid average_price
+            # separate list for days that will have null average_price and valid average_price
             null_values = []
             available_price_values = []
             for date in date_list:
@@ -100,6 +101,7 @@ def average_price_list(request):
             sorted_list = sorted(combined_list, key=lambda x: x['day'])
             return Response( sorted_list,  status=status.HTTP_201_CREATED)
         else:
+            # response requests with missing param(s)
             return Response( {'message': 'One or more parameters are missing'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         data = {'error': str(e)}
