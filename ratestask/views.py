@@ -99,7 +99,7 @@ def average_price_list(request):
 
             # Sort the combined list by the day key
             sorted_list = sorted(combined_list, key=lambda x: x['day'])
-            return Response( sorted_list,  status=status.HTTP_201_CREATED)
+            return Response( sorted_list,  status=status.HTTP_200_OK)
         else:
             # response for requests with missing param(s)
             return Response( {'message': 'One or more parameters are missing'}, status=status.HTTP_400_BAD_REQUEST)
